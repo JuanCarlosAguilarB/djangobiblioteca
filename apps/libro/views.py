@@ -9,12 +9,16 @@ from libro.models import Autor
 class Home(generic.TemplateView):
     template_name = 'index.html'
     
-# class ListadoAutores(generic.TemplateView):
-#     def get_context_data(self,request, *args,**kwargs):
-#         # context = super().get_context_data(**kwargs)
-#         # context[""] = 
-#         return render(request,'index.html')
-    
+class ListadoAutores(generic.TemplateView):
+    model = Autor
+    template_name = 'libro/listar_autor.html'
+    queryset = Autor.objects.filter(estado=True)
+    # context_object_name = 'autores'  ## definir cómo se hace 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context['autores'] = self.queryset
+        return context
 
 
 def crearAutor(request):
