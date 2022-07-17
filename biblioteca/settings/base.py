@@ -19,7 +19,7 @@ BASE_APPS = [  # Application definition requiremtens of django
 
 LOCAL_APPS = [    ## apps of projects
     'apps.libro',
-    'apps.usuario',
+    # 'apps.usuario',
 ]
 
 THIRD_APPS = [    
