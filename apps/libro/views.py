@@ -1,17 +1,19 @@
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import TemplateView
+from django.views import generic
 
 from .forms import AutorForm
 from libro.models import Autor
 
 
-class Home(TemplateView):
+class Home(generic.TemplateView):
     template_name = 'index.html'
-    # def get_context_data(self,request, *args,**kwargs):
-        # context = super().get_context_data(**kwargs)
-        # context[""] = 
-        # return render(request,'index.html')
+    
+# class ListadoAutores(generic.TemplateView):
+#     def get_context_data(self,request, *args,**kwargs):
+#         # context = super().get_context_data(**kwargs)
+#         # context[""] = 
+#         return render(request,'index.html')
     
 
 
