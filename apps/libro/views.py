@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views import generic
 
@@ -47,7 +47,7 @@ def editarAutor(request,id):
             autor_form = AutorForm(request.POST, instance = autor)
             if autor_form.is_valid():
                 autor_form.save()
-            return redirect('index')
+            return redirect(('libro:listar_autor'))
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'libro/crear_autor.html',{'autor_form':autor_form,'error':error})
