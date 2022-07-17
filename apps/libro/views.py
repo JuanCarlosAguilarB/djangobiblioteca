@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views import generic
+from django.urls import reverse_lazy
 
 from .forms import AutorForm
 from libro.models import Autor
@@ -19,6 +20,15 @@ class ListadoAutores(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         context['autores'] = self.queryset
         return context
+
+class UpdateAutoresView(generic.UpdateView):
+    '''view para actualizar autores'''
+    model = Autor
+    template_name = 'libro/crear_autor.html'
+    form_class = AutorForm
+    success_url = reverse_lazy('libro:listar_autor')
+    
+    
 
 
 def crearAutor(request):
