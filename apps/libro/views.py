@@ -1,10 +1,19 @@
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import TemplateView
+
 from .forms import AutorForm
 from libro.models import Autor
-# Create your views here.
-def Home(request):
-    return render(request,'index.html')
+
+
+class Home(TemplateView):
+    template_name = 'index.html'
+    # def get_context_data(self,request, *args,**kwargs):
+        # context = super().get_context_data(**kwargs)
+        # context[""] = 
+        # return render(request,'index.html')
+    
+
 
 def crearAutor(request):
     if request.method == 'POST':

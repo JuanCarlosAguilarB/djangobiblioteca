@@ -2,7 +2,7 @@ from django.urls import path
 from .views import crearAutor,listarAutor,editarAutor,eliminarAutor, Home
 
 urlpatterns = [
-    path('home/',Home, name = 'index'),
+    # path('home/',Home, name = 'index'),
     path('crear_autor/',crearAutor, name = 'crear_autor'),
     path('listar_autor/',listarAutor, name = 'listar_autor'),
     path('editar_autor/<int:id>',editarAutor, name = 'editar_autor'),
