@@ -10,6 +10,7 @@ class Autor(models.Model):
     fecha_creacion = models.DateField('Fecha de creación', auto_now = True, auto_now_add = False)
 
     class Meta:
+        # app_label = 'apps.libro'
         verbose_name = 'Autor'
         verbose_name_plural = 'Autores'
         ordering = ['nombre']

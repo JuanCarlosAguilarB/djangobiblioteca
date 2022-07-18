@@ -5,15 +5,18 @@ from django.urls import reverse_lazy
 
 from .forms import AutorForm
 from libro.models import Autor
+from libro import models
 
 
 class Home(generic.TemplateView):
     template_name = 'index.html'
     
 class ListadoAutores(generic.TemplateView):
-    model = Autor
+    model = models.Autor
     template_name = 'libro/listar_autor.html'
-    queryset = Autor.objects.filter(estado=True)
+    print(models.Autor.objects.all()[0].estado)
+    queryset = models.Autor.objects.filter(estado=True)
+    print(queryset)
     # context_object_name = 'autores'  ## definir cómo se hace 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -23,12 +26,28 @@ class ListadoAutores(generic.TemplateView):
 
 class UpdateAutoresView(generic.UpdateView):
     '''view para actualizar autores'''
-    model = Autor
+    model = models.Autor
     template_name = 'libro/crear_autor.html'
     form_class = AutorForm
     success_url = reverse_lazy('libro:listar_autor')
     
+class CreateAutor(generic.CreateView):
+    '''view para crear autores'''
+    model = models.Autor
+    template_name = 'libro/crear_autor.html'
+    form_class = AutorForm
+    success_url = reverse_lazy('libro:listar_autor')
     
+class DeleteAutor(generic.DeleteView):
+    model = models.Autor
+    # success_url = 'libro/listar_autor.html'
+    
+    def post(self, request,pk,*args, **kwargs):
+        object = models.Autor.objects.get(pk=pk)
+        object.estado = False
+        object.save()
+        return redirect('libro:listar_autor')
+        
 
 
 def crearAutor(request):
@@ -43,7 +62,9 @@ def crearAutor(request):
 
 
 def listarAutor(request):
-    autores = Autor.objects.filter(estado = True)
+    autores = models.Autor.objects.filter(estado = True)
+    
+    
     return render(request,'libro/listar_autor.html',{'autores':autores})
 
 def editarAutor(request,id):
