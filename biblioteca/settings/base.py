@@ -20,7 +20,7 @@ BASE_APPS = [  # Application definition requiremtens of django
 
 LOCAL_APPS = [    ## apps of projects
     'apps.libro',
-    # 'apps.usuario',
+    'apps.usuario',
 ]
 
 THIRD_APPS = [    
@@ -84,8 +84,8 @@ USE_I18N = True
 USE_TZ = True
 
 
-LOGIN_REDIRECT_URL = reverse_lazy('index')
-LOGOUT_REDIRECT_URL = reverse_lazy('login')
+# LOGIN_REDIRECT_URL = reverse_lazy('home')
+# LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 
 STATIC_URL = "/static/"

@@ -55,7 +55,7 @@ def crearAutor(request):
         autor_form = AutorForm(request.POST)
         if autor_form.is_valid():
             autor_form.save()
-            return redirect('index')
+            return redirect('home')
     else:
         autor_form = AutorForm()
     return render(request,'libro/crear_autor.html',{'autor_form':autor_form})
