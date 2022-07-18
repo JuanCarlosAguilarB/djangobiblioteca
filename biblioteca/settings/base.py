@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import sys
+from django.urls import reverse_lazy
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,6 +82,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / 'static'
