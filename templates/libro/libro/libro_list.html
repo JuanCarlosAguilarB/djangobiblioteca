@@ -6,7 +6,9 @@
 
 {% block body %}
 
-
+<div>
+<button class="btn btn-primary" type="button" onclick="modal_creacion_libro('{% url 'libro:crear_libro'%}')">Crear libro</button>
+</div>
 
   {% if libro %}
       <div class="card">
@@ -36,7 +38,7 @@
                         </td>
                         
                         <td>
-                          <a href="{% url 'libro:editar_libro' libros.id %}" class="btn btn-primary">Editar</a>
+                          <button onclick="modal_editar_libro('{% url 'libro:editar_libro' libros.id %}')" class="btn btn-primary">Editar</button>
                           <a href="{% url 'libro:eliminar_libro' libros.id %}" class="btn btn-danger">Eliminar</a>
                         </td>
                       </tr>
@@ -49,28 +51,27 @@
         <h1>No existen libros registrados</h1>
       {% endif %}
 
-      <form method="POST">
-        {% csrf_token %}
-        {% if error %}
-          <h2>{{ error }}</h2>
-        {% else %}
-            <div class="card">
-                <div class="card-header">
-                    <strong>Formulario de Registro</strong>
-                </div>
-                <div class="card-body card-block">
-                    <form action="#" method="post" enctype="multipart/form-data" class="form-horizontal">
-                          {% csrf_token%}
-                      {{form.as_p}}
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Registrar</button>
-                            <button type="reset" class="btn btn-danger">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            {% endif %}
-          </form>
+
           
+          <div class="modal fade" id="edicion" role="dialog"></div>
+          <div class="modal fade" id="creacion" role="dialog"></div>
 
 {% endblock body %}
+
+{%block extrajs%}
+<script>
+  
+  var $ =jQuery
+  function modal_editar_libro(url){
+    $('#edicion').load(url, function(){
+      $(this).modal('show');
+    })
+  }
+
+ function modal_creacion_libro(url){
+  $('#creacion').load(url, function(){
+    $(this).modal('show');
+  })
+} 
+</script>
+{%endblock%}

@@ -80,7 +80,7 @@ class CrearLibro(generic.CreateView):
 class UpdateLibroView(generic.UpdateView):
     '''view para actualizar libro'''
     model = models.Libro
-    template_name = 'libro/libro/libro_list.html'
+    template_name = 'libro/libro/libro.html'
     form_class = forms.LibroFroms
     success_url = reverse_lazy('libro:listar_libros')
     
