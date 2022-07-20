@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+
+{% block titulo %}
+  Biblioteca.dev | Listado de Usuarios
+{% endblock titulo %}
+
+{% block body %}
+  {% if usuario %}
+      <div class="card">
+          <div class="card-header">
+              <strong class="card-title">Listado de usuarios</strong>
+          </div>
+          <div class="table-stats order-table ov-h">
+              <table class="table">
+                  <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for users in usuario %}
+                      <tr>
+                        <td>{{ users.username }}</td>
+                        <td>{{ users.nombres }}</td>
+                        <td>{{ users.apellidos }}</td>
+                        <td>{{ users.email }}</td>
+                        <td>
+                          <a href="{% url 'usuarios:editar_usuarios' users.id %}" class="btn btn-primary">Editar</a>
+                          <a href="{% url 'usuarios:borrar_usuarios' users.id %}" class="btn btn-danger">Eliminar</a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      {% else %}
+        <h1>No existen userses registrados</h1>
+      {% endif %}
+
+{% endblock body %}

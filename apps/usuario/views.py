@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect, reverse
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -6,8 +6,10 @@ from django.views.decorators.cache import never_cache  # para que no se almacene
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import login, logout ## para indicarle a django que inicie una seción 
 from django.http import HttpResponseRedirect
+from django.views import generic 
 
-from usuario import forms
+from usuario import forms, models
+
 
 
 class Login(FormView):
@@ -37,3 +39,29 @@ def logoutUser(request):
         
 
     
+class CrearUsuario(generic.CreateView):
+    model = models.Usuario
+    form_class = forms.FormUsuario
+    template_name = 'usuario/crear_usuario.html'
+    success_url = reverse_lazy('usuario:listar_usuarios')
+    
+class ListarUsuarios(generic.ListView):
+    model = models.Usuario
+    template_name = 'usuario/listar_usuarios.html'
+    queryset = models.Usuario.objects.filter(usuario_activo=True)
+    context_object_name = 'usuario'
+
+class BorrarUsuario(generic.DeleteView):
+    model = models.Usuario
+    
+    def post(self, request, pk, *args, **kwargs):
+        object = models.Usuario.objects.get(pk=pk)
+        object.usuario_activo=False
+        object.save()
+        return redirect('usuario:listar_usuarios') 
+    
+class ActualizarUsuario(generic.UpdateView):
+    model = models.Usuario
+    form_class = forms.FormUsuario
+    template_name = 'usuario/crear_usuario.html'
+    success_url = reverse_lazy('usuario:listar_usuarios')

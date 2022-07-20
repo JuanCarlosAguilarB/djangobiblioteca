@@ -24,11 +24,12 @@ from apps.usuario.views import Login, logoutUser
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('libro/',include(('apps.libro.urls','libro'))),
     path("", Home.as_view(), name="home"),
     path('accounts/login/',Login.as_view(),name='login'), ## las {} son para pasarle arguentos a login
-    # path('logout/',LogoutView.as_view(),name='logout'),
     path('logout/',login_required(logoutUser),name='logout'),
+        
+    path('libro/',include(('apps.libro.urls','libro'))),
+    path('usuario/',include(('apps.usuario.urls','usuarios'))),
     
 ]
 
