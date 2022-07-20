@@ -43,7 +43,31 @@ class CrearUsuario(generic.CreateView):
     model = models.Usuario
     form_class = forms.FormUsuario
     template_name = 'usuario/crear_usuario.html'
-    success_url = reverse_lazy('usuario:listar_usuarios')
+    success_url = reverse_lazy('usuarios:listar_usuarios')
+    
+    def post(self, request,*args, **kwargs):
+        form = self.form_class(request.POST) ## estamos reciviendo toda la información que viene de la petición 
+        
+        if form.is_valid():
+            '''Se va a registrar el form en la base de datos directamente'''
+            nuevo_usuario = models.Usuario(
+                email = form.cleaned_data['email'],
+                username = form.cleaned_data.get('username'), #tambien podemos acceder por medio de get
+                nombres = form.cleaned_data.get('nombres'),
+                apellidos=form.cleaned_data['apellidos']
+            )
+            nuevo_usuario.set_password(form.cleaned_data.get('password1'))
+            nuevo_usuario.save()  ###  estamos usando el método save del modelo
+            
+            return redirect('usuarios:listar_usuarios')
+        else:
+            return render(request, self.template_name,{'form':form})
+        
+        ## si en algún momento mandaramos a llamar el método save del fórmulario, encriptariamos la contaraseña 2 veces 
+        
+        
+        
+        
     
 class ListarUsuarios(generic.ListView):
     model = models.Usuario
@@ -58,10 +82,10 @@ class BorrarUsuario(generic.DeleteView):
         object = models.Usuario.objects.get(pk=pk)
         object.usuario_activo=False
         object.save()
-        return redirect('usuario:listar_usuarios') 
+        return redirect('usuarios:listar_usuarios') 
     
 class ActualizarUsuario(generic.UpdateView):
     model = models.Usuario
     form_class = forms.FormUsuario
     template_name = 'usuario/crear_usuario.html'
-    success_url = reverse_lazy('usuario:listar_usuarios')
+    success_url = reverse_lazy('usuarios:listar_usuarios')

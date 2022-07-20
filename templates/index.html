@@ -28,6 +28,18 @@
                 <ul class="nav navbar-nav">
                     <li class="active">
                         {% comment %} <a href="{% url 'index.html' %}"><i class="menu-icon fa fa-laptop"></i>Inicio</a> {% endcomment %}
+                        {%if request.user.is_staff%}
+                    </li>
+                    <li class="menu-item-has-children dropdown">
+                       <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Autores</a>
+                       <ul class="sub-menu children dropdown-menu">
+                           <li><i class="fa fa-pencil"></i><a href="{% url 'usuarios:crear_usuarios' %}">Registro de Usuarios</a></li>
+                           <li><i class="fa fa-table"></i><a href="{% url 'usuarios:listar_usuarios' %}">Listado de Usuarios</a></li>
+                       </ul>
+                    </li>
+                        {%endif%}
+
+
                     </li>
                     <li class="menu-item-has-children dropdown">
                        <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Autores</a>
