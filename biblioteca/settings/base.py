@@ -97,3 +97,5 @@ STATICFILES_DIRS = (
 )
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # STATICFILES_STORAGE = '../stactic/'
+
+AUTH_USER_MODEL = 'usuario.Usuario'
