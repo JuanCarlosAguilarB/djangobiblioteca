@@ -7,8 +7,15 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import login, logout ## para indicarle a django que inicie una seción 
 from django.http import HttpResponseRedirect
 from django.views import generic 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from usuario import forms, models
+
+from django.views import generic
+class Home(LoginRequiredMixin,generic.TemplateView):
+    template_name = 'index.html'
+
 
 
 

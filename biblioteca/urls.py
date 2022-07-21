@@ -19,8 +19,7 @@ from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth.decorators import login_required
 
-from apps.libro.views import Home
-from apps.usuario.views import Login, logoutUser
+from apps.usuario.views import Login, logoutUser, Home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
