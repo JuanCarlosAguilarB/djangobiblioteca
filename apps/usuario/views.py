@@ -7,13 +7,13 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import login, logout ## para indicarle a django que inicie una seción 
 from django.http import HttpResponseRedirect
 from django.views import generic 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
-from usuario import forms, models
+from usuario import forms, models, mixins
 
 from django.views import generic
-class Home(LoginRequiredMixin,generic.TemplateView):
+class Home(mixins.LoginSuperUsuarioMixin,generic.TemplateView):
     template_name = 'index.html'
 
 
@@ -76,7 +76,8 @@ class CrearUsuario(generic.CreateView):
         
         
     
-class ListarUsuarios(generic.ListView):
+class ListarUsuarios(PermissionRequiredMixin ,generic.ListView): ## PermissionRequiredMixin solicita verificar los permisos que le indiquemos 
+    permission_required = 'usuario.view_usuario'
     model = models.Usuario
     template_name = 'usuario/listar_usuarios.html'
     queryset = models.Usuario.objects.filter(usuario_activo=True)

@@ -1,38 +1,62 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self,  username, email, nombres, apellidos, password=None):
-        if not email:
-            raise ValueError("el usuario debe tener un correo electrónico")
-        
-        usuario = self.model(  # acá solo hemos nstanciado un objeto usuario
+    def _create_user(self,  username, email, nombres, apellidos, password, is_staff, is_superuser, **extra_fields):
+        '''esta función va a ser llamada cuando utilicemos la consola '''
+        user = self.model(  # acá solo hemos nstanciado un objeto usuario
             username=username,
             email=self.normalize_email(email),
             nombres=nombres,
-            apellidos=apellidos
+            apellidos=apellidos,
+            is_staff=is_staff,
+            is_superuser=is_superuser,
+            **extra_fields
             )
-        return usuario
+        user.set_password(password)
+        user.save(using=self.db)  # using=self.db --> le decimos a django que use la base de datos actual
         
-        usuario.set_password(password)  ## encripta la contraseña 
-        usuario.save()
+        return  user
+    
+    def create_user(self,  username, email, nombres, apellidos, password=None, **extra_fields):
+        '''función para crear a un usuario'''
+        return self._create_user(username, email, nombres, apellidos, password, False, False, **extra_fields)
         
-    def create_superuser(self,  username,email, nombres, apellidos, password=None):
-        usuario = self.create_user(
-            username,
-            email,
-            nombres,
-            apellidos,
-            password=password
-            )
-        usuario.usuario_administrador=True
-        usuario.save()
-        return usuario
+    def create_user(self,  username, email, nombres, apellidos, password=None, **extra_fields):
+        '''función para crear a un super usuario'''
+        return self._create_user(username, email, nombres, apellidos, password, True, True, **extra_fields)
+        
+    # def create_user(self,  username, email, nombres, apellidos, password=None):
+    #     if not email:
+    #         raise ValueError("el usuario debe tener un correo electrónico")
+        
+    #     usuario = self.model(  # acá solo hemos nstanciado un objeto usuario
+    #         username=username,
+    #         email=self.normalize_email(email),
+    #         nombres=nombres,
+    #         apellidos=apellidos
+    #         )
+    #     return usuario
+        
+    #     usuario.set_password(password)  ## encripta la contraseña 
+    #     usuario.save()
+        
+    # def create_superuser(self,  username,email, nombres, apellidos, password=None):
+    #     usuario = self.create_user(
+    #         username,
+    #         email,
+    #         nombres,
+    #         apellidos,
+    #         password=password
+    #         )
+    #     usuario.usuario_administrador=True
+    #     usuario.save()
+    #     return usuario
         
         
 
 
-class Usuario(AbstractBaseUser): 
+class Usuario(AbstractBaseUser, PermissionsMixin): 
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True, max_length=254)
     nombres = models.CharField(max_length=50, blank=True, null=True)
@@ -41,7 +65,8 @@ class Usuario(AbstractBaseUser):
     usuario_activo = models.BooleanField(default=True)
     usuario_administrador  = models.BooleanField(default=False) # Para identificar que usuarios pueden entrar al admin de django 
     
-    
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
     objects=UsuarioManager() # enlazando el modelo con el manager
     
@@ -53,14 +78,15 @@ class Usuario(AbstractBaseUser):
         return f'Usuario {self.nombres}, {self.apellidos}'
     
     ##debemos definirle los permisos
-    def has_perm(self, perm, obj=None):
+    # def has_perm(self, perm, obj=None):
     
-        return True
-    def has_module_perms(self, app_label):
-        return True
+    #     return True
+    # def has_module_perms(self, app_label):
+    #     return True
     
-    @property
-    def is_staff(self):
-        return self.usuario_administrador
+    # @property
+    # def is_staff(self):  
+    #     '''método que retorna si el usuario es administrador o no '''
+    #     return self.usuario_administrador
     
-
+    ### están comentariados poruqe ya no son necesarios, PermisosMixin los define de forma automática 
